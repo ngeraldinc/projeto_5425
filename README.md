@@ -22,7 +22,7 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 ## Requisitos
 
 - Python 3.14.5
-- PostgreSQL []
+- PostgreSQL 18.6-3-windows-x64
 - Git version 2.56.0.windows.2
 - Acesso ao terminal ou à linha de comandos
 
