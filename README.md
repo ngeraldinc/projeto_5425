@@ -6,7 +6,7 @@ O Sistema de Gestão de Marcações é uma aplicação para gerir as marcações
 
 O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o cliente fica impedido de efetuar novas marcações e recebe a indicação de um contacto de WhatsApp.
 
-## Funcionalidades implementadas
+## Funcionalidades previstas
 
 - Consultar os serviços disponíveis.
 - Consultar os horários disponíveis.
