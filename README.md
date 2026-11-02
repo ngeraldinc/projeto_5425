@@ -18,7 +18,6 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 - Impedir novas marcações quando o cliente tiver duas faltas.
 - Apresentar o contacto de WhatsApp da administração quando o cliente estiver bloqueado.
 
-
 ## Requisitos
 
 - Python 3.14.5
@@ -27,18 +26,10 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 - Acesso ao terminal ou à linha de comandos
 
 ## Preparação do ambiente
-
-
 ## Instalação
-
-
 ## Comando de execução
-
-
 ## Configuração
-
 ## Comando dos testes
-
 
 ## Limitações conhecidas
 
