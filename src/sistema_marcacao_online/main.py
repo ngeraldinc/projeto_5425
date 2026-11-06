@@ -1,10 +1,13 @@
-from sistema_marcacao_online.services.servico_service import (
+from sistema_marcacao_online.services.servico_servico import (
     criar_servico,
     listar_servicos,
 )
 from sistema_marcacao_online.services.cliente_servico import (
     obter_ou_registar_cliente,
 )
+
+from sistema_marcacao_online.services.marcacao_servico import criar_marcacao
+
 def mostrar_servicos():
     try:
         servicos = listar_servicos()
@@ -53,12 +56,35 @@ def registar_novo_cliente():
     except Exception as erro:
         print(f"Não foi possível registar o cliente: {erro}")
 
+def registar_nova_marcacao():
+    print("\nRegistar marcação")
+    id_cliente = input("ID do cliente: ").strip()
+    data = input("Data (AAAA-MM-DD): ").strip()
+    hora = input("Hora (HH:MM): ").strip()
+    ids_servicos = input("IDs dos serviços separados por vírgulas: ").strip()
+
+    try:
+        id_marcacao = criar_marcacao(
+            int(id_cliente),
+            data,
+            hora,
+            ids_servicos,
+        )
+        print(f"Marcação criada com sucesso. ID: {id_marcacao}")
+
+    except ValueError as erro:
+        print(f"Dados inválidos: {erro}")
+
+    except Exception as erro:
+        print(f"Não foi possível criar a marcação: {erro}")
+
 def main():
     while True:
         print("\n=== Sistema de marcações ===")
         print("1. Listar serviços")
         print("2. Registar serviço")
         print("3. Registar cliente")
+        print("4. Registar marcação")
         print("0. Sair")
 
         opcao = input("Escolha uma opção: ").strip()
@@ -69,11 +95,13 @@ def main():
             registar_novo_servico()
         elif opcao == "3":
             registar_novo_cliente()
+        elif opcao == "4":
+            registar_nova_marcacao()    
         elif opcao == "0":
             print("A aplicação foi encerrada.")
             break
         else:
-            print("Opção inválida. Escolha 1, 2 , 3 ou 0.")
+            print("Opção inválida. Escolha 1, 2 , 3 , 4 ou 0.")
 
 if __name__ == "__main__":
     main()

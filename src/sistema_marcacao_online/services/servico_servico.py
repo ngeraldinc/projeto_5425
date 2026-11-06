@@ -1,6 +1,6 @@
 from decimal import Decimal , InvalidOperation
 from sistema_marcacao_online.database import get_connection
-from sistema_marcacao_online.repositories.servico_repository import (
+from sistema_marcacao_online.repositories.servico_repositorio import (
     listar_servicos as listar_servicos_repo,
     registar_servico as guardar_servico,
 )
