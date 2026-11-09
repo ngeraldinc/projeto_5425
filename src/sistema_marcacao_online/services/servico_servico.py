@@ -1,17 +1,12 @@
 from decimal import Decimal , InvalidOperation
 from sistema_marcacao_online.database import get_connection
-from sistema_marcacao_online.repositories.servico_repositorio import (
-    listar_servicos as listar_servicos_repo,
-    registar_servico as guardar_servico,
-)
-
+from sistema_marcacao_online.repositories.servico_repositorio import listar_servicos as listar_servicos_repo, registar_servico as guardar_servico
 
 def listar_servicos():
     return listar_servicos_repo()
 
 CENTIMO = Decimal("0.01")
 PRECO_MAXIMO = Decimal("99999999.99")
-
 
 def _validar_texto(valor: str, campo: str, limite: int) -> str:
     if not isinstance(valor, str):
@@ -29,7 +24,6 @@ def _validar_texto(valor: str, campo: str, limite: int) -> str:
         )
 
     return texto
-
 
 def criar_servico(nome: str, descricao: str, preco: str | Decimal) -> int:
     nome_validado = _validar_texto(nome, "nome", 50)

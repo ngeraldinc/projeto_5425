@@ -2,7 +2,6 @@ from sistema_marcacao_online.database import get_connection
 from decimal import Decimal
 from sistema_marcacao_online.database import get_connection
 
-
 def listar_servicos():
     with get_connection() as connection:
         return connection.execute(

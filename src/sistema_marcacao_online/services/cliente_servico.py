@@ -1,7 +1,4 @@
-from sistema_marcacao_online.repositories.cliente_repositorio import (
-    obter_cliente_por_telefone,
-    registar_cliente,
-)
+from sistema_marcacao_online.repositories.cliente_repositorio import obter_cliente_por_telefone, registar_cliente 
 
 def _validar_texto(valor: str, campo: str, limite: int) -> str:
     if not isinstance(valor, str):

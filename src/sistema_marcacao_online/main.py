@@ -1,12 +1,6 @@
-from sistema_marcacao_online.services.servico_servico import (
-    criar_servico,
-    listar_servicos,
-)
-from sistema_marcacao_online.services.cliente_servico import (
-    obter_ou_registar_cliente,
-)
-
-from sistema_marcacao_online.services.marcacao_servico import criar_marcacao
+from sistema_marcacao_online.services.servico_servico import criar_servico, listar_servicos
+from sistema_marcacao_online.services.cliente_servico import obter_ou_registar_cliente
+from sistema_marcacao_online.services.marcacao_servico import criar_marcacao, atualizar_estado_marcacao, listar_marcacoes
 
 def mostrar_servicos():
     try:
@@ -22,7 +16,6 @@ def mostrar_servicos():
 
     except Exception as erro:
         print(f"\nNão foi possível listar os serviços: {erro}")
-
 
 def registar_novo_servico():
     print("\nRegistar serviço")
@@ -78,6 +71,42 @@ def registar_nova_marcacao():
     except Exception as erro:
         print(f"Não foi possível criar a marcação: {erro}")
 
+def mostrar_marcacoes():
+    try:
+        marcacoes = listar_marcacoes()
+
+        if not marcacoes:
+            print("\nAinda não existem marcações registadas.")
+            return
+
+        print("\nMarcações:")
+        for id_marcacao, data, hora, estado, nome_cliente, servicos in marcacoes:
+            print(
+                f"{id_marcacao}. {data} às {hora} — {nome_cliente} — "
+                f"{servicos} — Estado: {estado}"
+            )
+
+    except Exception as erro:
+        print(f"\nNão foi possível listar as marcações: {erro}")
+
+def atualizar_estado_marcacao_menu():
+    print("\nAtualizar estado da marcação")
+    id_marcacao = input("ID da marcação: ").strip()
+    estado = input("Novo estado (realizada, cancelada ou falta): ").strip()
+
+    try:
+        id_atualizado = atualizar_estado_marcacao(
+            int(id_marcacao),
+            estado,
+        )
+        print(f"Estado da marcação {id_atualizado} atualizado com sucesso.")
+
+    except ValueError as erro:
+        print(f"Dados inválidos: {erro}")
+
+    except Exception as erro:
+        print(f"Não foi possível atualizar a marcação: {erro}")
+
 def main():
     while True:
         print("\n=== Sistema de marcações ===")
@@ -85,6 +114,8 @@ def main():
         print("2. Registar serviço")
         print("3. Registar cliente")
         print("4. Registar marcação")
+        print("5. Listar marcações")
+        print("6. Atualizar estado de marcação")
         print("0. Sair")
 
         opcao = input("Escolha uma opção: ").strip()
@@ -97,11 +128,15 @@ def main():
             registar_novo_cliente()
         elif opcao == "4":
             registar_nova_marcacao()    
+        elif opcao == "5":
+            mostrar_marcacoes()
+        elif opcao == "6":
+            atualizar_estado_marcacao_menu()
         elif opcao == "0":
             print("A aplicação foi encerrada.")
             break
         else:
-            print("Opção inválida. Escolha 1, 2 , 3 , 4 ou 0.")
+            print("Opção inválida. Escolha 1, 2 , 3 , 4 , 5 , 6 ou 0.")
 
 if __name__ == "__main__":
     main()

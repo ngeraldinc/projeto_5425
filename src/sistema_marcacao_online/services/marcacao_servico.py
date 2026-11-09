@@ -1,16 +1,7 @@
 from datetime import date, datetime, time
-
 from psycopg.errors import UniqueViolation
-
-from sistema_marcacao_online.repositories.marcacao_repositorio import (
-    contar_faltas_cliente,
-    criar_marcacao as criar_marcacao_repo,
-    horario_disponivel,
-)
-from sistema_marcacao_online.repositories.servico_repositorio import (
-    listar_servicos as listar_servicos_repo,
-)
-
+from sistema_marcacao_online.repositories.marcacao_repositorio import contar_faltas_cliente, criar_marcacao as criar_marcacao_repo, horario_disponivel, atualizar_estado_marcacao as atualizar_estado_marcacao_repo, listar_marcacoes as listar_marcacoes_repo
+from sistema_marcacao_online.repositories.servico_repositorio import listar_servicos as listar_servicos_repo
 
 def _validar_data(valor: str | date) -> date:
     try:
@@ -29,7 +20,6 @@ def _validar_data(valor: str | date) -> date:
         raise ValueError("A data da marcação não pode estar no passado.")
 
     return data_validada
-
 
 def _validar_hora(valor: str | time) -> time:
     if isinstance(valor, str):
@@ -50,7 +40,6 @@ def _validar_hora(valor: str | time) -> time:
         raise ValueError("A hora indicada não é válida.")
 
     return hora_validada
-
 
 def _validar_ids_servicos(valores: str | list[int]) -> list[int]:
     try:
@@ -77,7 +66,6 @@ def _validar_ids_servicos(valores: str | list[int]) -> list[int]:
         raise ValueError(f"Não existem serviços com estes IDs: {ids_invalidos}.")
 
     return ids
-
 
 def criar_marcacao(
     id_cliente: int,
@@ -113,3 +101,31 @@ def criar_marcacao(
         raise ValueError(
             "Esse horário acabou de ser reservado. Escolha outro."
         ) from erro
+
+def listar_marcacoes():
+    return listar_marcacoes_repo()
+
+def atualizar_estado_marcacao(id_marcacao: int, estado: str) -> int:
+    if id_marcacao <= 0:
+        raise ValueError("O ID da marcação deve ser um número positivo.")
+
+    if not isinstance(estado, str):
+        raise ValueError("O estado indicado não é válido.")
+
+    estado_validado = estado.strip().lower()
+    estados_permitidos = {"realizada", "cancelada", "falta"}
+
+    if estado_validado not in estados_permitidos:
+        raise ValueError(
+            "O estado deve ser realizada, cancelada ou falta."
+        )
+
+    id_atualizado = atualizar_estado_marcacao_repo(
+        id_marcacao,
+        estado_validado,
+    )
+
+    if id_atualizado is None:
+        raise ValueError(f"Não existe uma marcação com o ID {id_marcacao}.")
+
+    return id_atualizado
