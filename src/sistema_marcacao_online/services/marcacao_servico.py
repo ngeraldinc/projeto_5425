@@ -1,6 +1,8 @@
 from datetime import date, datetime, time
 from psycopg.errors import UniqueViolation
-from sistema_marcacao_online.repositories.marcacao_repositorio import contar_faltas_cliente, criar_marcacao as criar_marcacao_repo, horario_disponivel, atualizar_estado_marcacao as atualizar_estado_marcacao_repo, listar_marcacoes as listar_marcacoes_repo
+from sistema_marcacao_online.repositories.marcacao_repositorio import (contar_faltas_cliente, criar_marcacao as criar_marcacao_repo,
+horario_disponivel, atualizar_estado_marcacao as atualizar_estado_marcacao_repo, listar_marcacoes as listar_marcacoes_repo,
+listar_horarios_ocupados as listar_horarios_ocupados_repo)
 from sistema_marcacao_online.repositories.servico_repositorio import listar_servicos as listar_servicos_repo
 
 def _validar_data(valor: str | date) -> date:
@@ -80,6 +82,17 @@ def criar_marcacao(
     hora_validada = _validar_hora(hora)
     ids_validos = _validar_ids_servicos(ids_servicos)
 
+    if data_validada.weekday() >= 5:
+        raise ValueError("Só é possível marcar de segunda a sexta-feira.")
+    
+    horarios_permitidos = [time(hora) for hora in range(8, 20, 2)]
+    
+    if hora_validada not in horarios_permitidos:
+        raise ValueError(
+        "Escolha um horário de duas em duas horas, "
+        "entre as 08:00 e as 18:00."
+        )
+
     faltas = contar_faltas_cliente(id_cliente)
     if faltas >= 2:
         raise ValueError(
@@ -129,3 +142,20 @@ def atualizar_estado_marcacao(id_marcacao: int, estado: str) -> int:
         raise ValueError(f"Não existe uma marcação com o ID {id_marcacao}.")
 
     return id_atualizado
+
+def listar_horarios_disponiveis(data: str | date) -> list[time]:
+    data_validada = _validar_data(data)
+
+    if data_validada.weekday() >= 5:
+        raise ValueError("Só é possível marcar de segunda a sexta-feira.")
+
+    horarios_do_dia = [time(hora) for hora in range(8, 20, 2)]
+    horarios_ocupados = set(
+        listar_horarios_ocupados_repo(data_validada)
+    )
+
+    return [
+        hora
+        for hora in horarios_do_dia
+        if hora not in horarios_ocupados
+    ]

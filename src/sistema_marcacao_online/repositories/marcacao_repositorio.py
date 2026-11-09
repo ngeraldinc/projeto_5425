@@ -104,3 +104,17 @@ def atualizar_estado_marcacao(id_marcacao: int, estado: str):
         ).fetchone()
 
     return resultado[0] if resultado else None
+
+def listar_horarios_ocupados(data: date) -> list[time]:
+    with get_connection() as connection:
+        resultados = connection.execute(
+            """
+            SELECT hora
+            FROM marcacao
+            WHERE data = %s
+              AND estado <> 'cancelada'
+            """,
+            (data,),
+        ).fetchall()
+
+    return [resultado[0] for resultado in resultados]

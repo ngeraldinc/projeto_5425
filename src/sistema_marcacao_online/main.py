@@ -1,6 +1,6 @@
 from sistema_marcacao_online.services.servico_servico import criar_servico, listar_servicos
 from sistema_marcacao_online.services.cliente_servico import obter_ou_registar_cliente
-from sistema_marcacao_online.services.marcacao_servico import criar_marcacao, atualizar_estado_marcacao, listar_marcacoes
+from sistema_marcacao_online.services.marcacao_servico import criar_marcacao, atualizar_estado_marcacao, listar_marcacoes, listar_horarios_disponiveis, listar_marcacoes
 
 def mostrar_servicos():
     try:
@@ -107,6 +107,26 @@ def atualizar_estado_marcacao_menu():
     except Exception as erro:
         print(f"Não foi possível atualizar a marcação: {erro}")
 
+def mostrar_horarios_disponiveis():
+    data = input("Data (AAAA-MM-DD): ").strip()
+
+    try:
+        horarios = listar_horarios_disponiveis(data)
+
+        if not horarios:
+            print("\nNão existem horários disponíveis nessa data.")
+            return
+
+        print(f"\nHorários disponíveis para {data}:")
+        for hora in horarios:
+            print(hora.strftime("%H:%M"))
+
+    except ValueError as erro:
+        print(f"Data inválida: {erro}")
+
+    except Exception as erro:
+        print(f"Não foi possível consultar os horários: {erro}")
+
 def main():
     while True:
         print("\n=== Sistema de marcações ===")
@@ -116,6 +136,7 @@ def main():
         print("4. Registar marcação")
         print("5. Listar marcações")
         print("6. Atualizar estado de marcação")
+        print("7. Consultar horários disponíveis")
         print("0. Sair")
 
         opcao = input("Escolha uma opção: ").strip()
@@ -132,11 +153,13 @@ def main():
             mostrar_marcacoes()
         elif opcao == "6":
             atualizar_estado_marcacao_menu()
+        elif opcao == "7":
+             mostrar_horarios_disponiveis()
         elif opcao == "0":
             print("A aplicação foi encerrada.")
             break
         else:
-            print("Opção inválida. Escolha 1, 2 , 3 , 4 , 5 , 6 ou 0.")
+            print("Opção inválida. Escolha 1, 2 , 3 , 4 , 5 , 6 , 7 ou 0.")
 
 if __name__ == "__main__":
     main()
