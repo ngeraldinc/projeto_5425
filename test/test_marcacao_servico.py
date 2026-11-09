@@ -1,10 +1,7 @@
 import unittest
 from unittest.mock import patch
-
-from sistema_marcacao_online.services.marcacao_servico import (
-    atualizar_estado_marcacao,
-    listar_marcacoes,
-)
+from datetime import date, time, timedelta
+from sistema_marcacao_online.services.marcacao_servico import atualizar_estado_marcacao, listar_marcacoes, listar_horarios_disponiveis, criar_marcacao
 
 class TestMarcacaoServico(unittest.TestCase):
 
@@ -51,6 +48,41 @@ class TestMarcacaoServico(unittest.TestCase):
         resultado = listar_marcacoes()
 
         self.assertEqual(resultado, marcacoes_ficticias)
+
+    @patch(
+        "sistema_marcacao_online.services.marcacao_servico."
+        "listar_horarios_ocupados_repo"
+    )
+        
+    def test_lista_somente_horarios_livres(self, listar_ocupados):
+        data = date.today() + timedelta(days=1)
+        while data.weekday() >= 5:
+            data += timedelta(days=1)
+
+        listar_ocupados.return_value = [time(10), time(14)]
+
+        horarios = listar_horarios_disponiveis(data)
+
+        self.assertEqual(
+            horarios,
+            [time(8), time(12), time(16), time(18)],
+        )
+
+    def test_recusa_marcacao_no_fim_de_semana(self):
+        data = date.today()
+        while data.weekday() != 5:
+            data += timedelta(days=1)
+
+        with self.assertRaises(ValueError):
+            listar_horarios_disponiveis(data)
+
+    def test_recusa_hora_fora_dos_turnos(self):
+        data = date.today() + timedelta(days=1)
+        while data.weekday() >= 5:
+            data += timedelta(days=1)
+
+        with self.assertRaises(ValueError):
+            criar_marcacao(1, data, "09:00", "1")
 
 if __name__ == "__main__":
     unittest.main()
