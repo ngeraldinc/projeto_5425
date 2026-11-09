@@ -51,9 +51,27 @@ def registar_novo_cliente():
 
 def registar_nova_marcacao():
     print("\nRegistar marcação")
-    id_cliente = input("ID do cliente: ").strip()
     data = input("Data (AAAA-MM-DD): ").strip()
-    hora = input("Hora (HH:MM): ").strip()
+
+    try:
+        horarios = listar_horarios_disponiveis(data)
+    except ValueError as erro:
+        print(f"Data inválida: {erro}")
+        return
+    except Exception as erro:
+        print(f"Não foi possível consultar os horários: {erro}")
+        return
+
+    if not horarios:
+        print("Não existem horários disponíveis nessa data.")
+        return
+
+    print(f"\nHorários disponíveis para {data}:")
+    for hora_disponivel in horarios:
+        print(hora_disponivel.strftime("%H:%M"))
+
+    hora = input("Escolha uma hora disponível (HH:MM): ").strip()
+    id_cliente = input("ID do cliente: ").strip()
     ids_servicos = input("IDs dos serviços separados por vírgulas: ").strip()
 
     try:
