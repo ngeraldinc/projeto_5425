@@ -16,7 +16,6 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 - Atualizar o estado da marcação para **realizada**, **cancelada** ou **falta**.
 - Contabilizar as faltas de cada cliente.
 - Impedir novas marcações quando o cliente tiver duas faltas.
-- Apresentar o contacto de WhatsApp da administração quando o cliente estiver bloqueado.
 
 ## Requisitos
 
@@ -26,7 +25,20 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 - Acesso ao terminal ou à linha de comandos
 
 ## Preparação do ambiente
+
+Crie a base de dados sistema_online no PostgreSQL e execute o ficheiro data/schema.sql através do pgAdmin.
+
 ## Instalação
+Crie um ficheiro .env na pasta principal do projeto:
+
+env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=sistema_online
+DB_USER=postgres
+DB_PASSWORD=coloque_a_sua_palavra_passe
+FLASK_SECRET_KEY=coloque_uma_chave_secreta
+
 ## Comando de execução
 
 Terminal
@@ -38,13 +50,20 @@ Flask
 PYTHONPATH=src flask --app sistema_marcacao_online.web run --debug
 
 ## Configuração
+
+python -m venv .venv
+source .venv/Scripts/activate
+python -m pip install -r requirements.txt
+PYTHONPATH=src python -m sistema_marcacao_online.criar_admin_inicial
+PYTHONPATH=src flask --app sistema_marcacao_online.web run --debug
+
 ## Comando dos testes
+
+ PYTHONPATH=src python -m unittest discover -s test -v
 
 ## Limitações conhecidas
 
 - A aplicação destina-se inicialmente a um único estabelecimento.
-- O contacto por WhatsApp é apresentado ao cliente; o sistema não envia mensagens automaticamente.
-- Não são realizados pagamentos online.
 - A marcação é confirmada no momento em que é criada.
 - O estado da marcação é atualizado pelo administrador para realizada, cancelada ou falta.
 - O bloqueio é aplicado quando o cliente acumula duas faltas.
