@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Área do administrador</title>
+</head>
+<body>
+    <h1>Gestão de marcações</h1>
+
+    {% if erro %}
+        <p>{{ erro }}</p>
+    {% endif %}
+
+    {% if sucesso %}
+        <p>{{ sucesso }}</p>
+    {% endif %}
+
+    {% if marcacoes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Cliente</th>
+                    <th>Serviços</th>
+                    <th>Estado atual</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id_marcacao, data, hora, estado, cliente, servicos in marcacoes %}
+                    <tr>
+                        <td>{{ id_marcacao }}</td>
+                        <td>{{ data }}</td>
+                        <td>{{ hora.strftime("%H:%M") }}</td>
+                        <td>{{ cliente }}</td>
+                        <td>{{ servicos }}</td>
+                        <td>{{ estado }}</td>
+                        <td>
+                            <form method="post">
+                                <input
+                                    type="hidden"
+                                    name="id_marcacao"
+                                    value="{{ id_marcacao }}"
+                                >
+                                <select name="estado" required>
+                                    <option value="realizada">Realizada</option>
+                                    <option value="cancelada">Cancelada</option>
+                                    <option value="falta">Falta</option>
+                                </select>
+                                <button type="submit">Atualizar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Ainda não existem marcações.</p>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('web.logout_admin') }}">
+        <button type="submit">Terminar sessão</button>
+    </form>
+</body>
+</html>

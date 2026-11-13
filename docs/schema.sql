@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "administrador" (
 	"id_admin" SERIAL NOT NULL,
 	"nome" VARCHAR(100) NOT NULL,
 	"email" VARCHAR(50) NOT NULL UNIQUE,
-	"palavra_passe" VARCHAR(50) NOT NULL,
+	"palavra_passe" VARCHAR(255) NOT NULL,
 	PRIMARY KEY("id_admin")
 );
 

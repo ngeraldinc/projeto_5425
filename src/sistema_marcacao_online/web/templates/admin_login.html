@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login do administrador</title>
+</head>
+<body>
+    <h1>Login do administrador</h1>
+
+    {% if erro %}
+        <p>{{ erro }}</p>
+    {% endif %}
+
+    <form method="post">
+        <label>
+            Email:
+            <input type="email" name="email" required>
+        </label>
+
+        <label>
+            Palavra-passe:
+            <input type="password" name="palavra_passe" required>
+        </label>
+
+        <button type="submit">Entrar</button>
+    </form>
+</body>
+</html>
