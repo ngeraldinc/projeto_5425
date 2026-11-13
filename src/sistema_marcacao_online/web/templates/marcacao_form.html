@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar horários</title>
+</head>
+<body>
+    <h1>Consultar horários disponíveis</h1>
+
+    <form method="get">
+        <label for="data">Escolha uma data:</label>
+        <input
+            type="date"
+            id="data"
+            name="data"
+            value="{{ data }}"
+            required
+        >
+        <button type="submit">Ver horários</button>
+    </form>
+
+    {% if erro %}
+        <p>{{ erro }}</p>
+    {% elif data %}
+        <h2>Horários para {{ data }}</h2>
+
+        {% if horarios %}
+            <ul>
+                {% for hora in horarios %}
+                    <li>{{ hora.strftime("%H:%M") }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não existem horários disponíveis nessa data.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
+
+{% if erro %}
+    <p>{{ erro }}</p>
+{% endif %}
+
+{% if sucesso %}
+    <p>{{ sucesso }}</p>
+{% endif %}
+
+{% if data and horarios %}
+    <h2>Registar marcação</h2>
+
+    <form method="post">
+        <input type="hidden" name="data" value="{{ data }}">
+
+        <label for="hora">Horário:</label>
+        <select id="hora" name="hora" required>
+            {% for hora in horarios %}
+                <option value="{{ hora.strftime('%H:%M') }}">
+                    {{ hora.strftime('%H:%M') }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <h3>Serviços</h3>
+        {% for id_servico, nome, descricao, preco in servicos %}
+            <label>
+                <input type="checkbox" name="ids_servicos" value="{{ id_servico }}">
+                {{ nome }} — {{ descricao }} — {{ preco }} €
+            </label><br>
+        {% endfor %}
+
+        <h3>Dados do cliente</h3>
+        <label>Nome: <input type="text" name="nome" required></label><br>
+        <label>Telefone: <input type="tel" name="telefone" required></label><br>
+        <label>Email: <input type="email" name="email" required></label><br>
+
+        <button type="submit">Confirmar marcação</button>
+    </form>
+{% elif data and not erro %}
+    <p>Não existem horários disponíveis nessa data.</p>
+{% endif %}

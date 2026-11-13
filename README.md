@@ -28,9 +28,14 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 ## Preparação do ambiente
 ## Instalação
 ## Comando de execução
+
+Terminal
 source .venv/Scripts/activate
 export PYTHONPATH=src
 python -m sistema_marcacao_online.main
+
+Flask 
+PYTHONPATH=src flask --app sistema_marcacao_online.web run --debug
 
 ## Configuração
 ## Comando dos testes
