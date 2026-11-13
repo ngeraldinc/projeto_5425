@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Serviços disponíveis</title>
+</head>
+<body>
+    <h1>Serviços disponíveis</h1>
+
+    {% if servicos %}
+        <ul>
+            {% for id_servico, nome, descricao, preco in servicos %}
+                <li>{{ nome }} — {{ descricao }} — {{ preco }} €</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ainda não existem serviços registados.</p>
+    {% endif %}
+</body>
+</html>

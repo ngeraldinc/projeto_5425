@@ -71,17 +71,29 @@ def registar_nova_marcacao():
         print(hora_disponivel.strftime("%H:%M"))
 
     hora = input("Escolha uma hora disponível (HH:MM): ").strip()
-    id_cliente = input("ID do cliente: ").strip()
-    ids_servicos = input("IDs dos serviços separados por vírgulas: ").strip()
+
+    mostrar_servicos()
+    ids_servicos = input(
+        "IDs dos serviços separados por vírgulas: "
+    ).strip()
+
+    print("\nDados do cliente")
+    nome = input("Nome: ").strip()
+    telefone = input("Telefone: ").strip()
+    email = input("Email: ").strip()
 
     try:
+        id_cliente = obter_ou_registar_cliente(nome, telefone, email)
         id_marcacao = criar_marcacao(
-            int(id_cliente),
+            id_cliente,
             data,
             hora,
             ids_servicos,
         )
-        print(f"Marcação criada com sucesso. ID: {id_marcacao}")
+        print(
+            f"Marcação criada com sucesso. ID: {id_marcacao} "
+            f"(cliente {id_cliente})"
+        )
 
     except ValueError as erro:
         print(f"Dados inválidos: {erro}")
