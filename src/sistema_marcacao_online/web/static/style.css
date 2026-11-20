@@ -1,0 +1,162 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    background: #f3f6fa;
+    color: #253047;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    color: #173b67;
+}
+
+h1 {
+    margin-bottom: 24px;
+}
+
+form {
+    margin: 20px 0;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #dce4ee;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px #20355012;
+}
+
+label {
+    display: block;
+    margin: 14px 0;
+    font-weight: 600;
+}
+
+input:not([type="checkbox"]),
+select {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #b9c6d6;
+    border-radius: 7px;
+    font: inherit;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #176b58;
+}
+
+button {
+    margin-top: 12px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 7px;
+    background: #176b58;
+    color: white;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #105342;
+}
+
+a {
+    color: #176b58;
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #dce4ee;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #e8eef5;
+    color: #173b67;
+}
+
+td form {
+    margin: 0;
+    padding: 8px;
+    box-shadow: none;
+}
+
+td select {
+    min-width: 140px;
+}
+
+.hero {
+    margin: -32px -20px 32px;
+    padding: 48px 20px;
+    background: #173b67;
+    color: white;
+    text-align: center;
+}
+
+.hero h1,
+.hero .marca {
+    color: white;
+}
+
+.marca {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+    margin: 24px 0 32px;
+}
+
+.servico-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid #dce4ee;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px #20355012;
+}
+
+.servico-card img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.servico-conteudo {
+    padding: 16px;
+}
+
+.preco {
+    color: #176b58;
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+.botao-link {
+    display: inline-block;
+    padding: 11px 18px;
+    border-radius: 7px;
+    background: #176b58;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}

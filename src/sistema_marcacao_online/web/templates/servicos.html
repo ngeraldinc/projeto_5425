@@ -2,25 +2,41 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Serviços disponíveis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bellass.pt — Marcações Online</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Serviços disponíveis</h1>
+    <header class="hero">
+        <h1>Bem-vindos ao Sistema de Marcação Online</h1>
+    </header>
 
-    {% if servicos %}
-        <ul>
+    <main>
+        <h2>Os nossos serviços disponíveis</h2>
+
+        <section class="servicos-grid">
             {% for id_servico, nome, descricao, preco in servicos %}
-                <li>{{ nome }} — {{ descricao }} — {{ preco }} €</li>
+                <article class="servico-card">
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/servico' ~ loop.index ~ '.jpg'
+                        ) }}"
+                        alt="{{ nome }}"
+                    >
+                    <div class="servico-conteudo">
+                        <h3>{{ nome }}</h3>
+                        <p>{{ descricao }}</p>
+                        <p class="preco">{{ "%.2f"|format(preco) }} €</p>
+                    </div>
+                </article>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>Ainda não existem serviços registados.</p>
-    {% endif %}
+        </section>
+
+        <a class="botao-link" href="{{ url_for('web.nova_marcacao') }}">
+            Consultar horários e marcar
+        </a>
+    </main>
 </body>
 </html>
-
-<p>
-    <a href="{{ url_for('web.nova_marcacao') }}">
-        Consultar horários e marcar
-    </a>
-</p>
