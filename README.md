@@ -55,7 +55,8 @@ python -m venv .venv
 source .venv/Scripts/activate
 python -m pip install -r requirements.txt
 PYTHONPATH=src python -m sistema_marcacao_online.criar_admin_inicial
-PYTHONPATH=src flask --app sistema_marcacao_online.web run --debug
+PYTHONPATH=src python -m flask --app sistema_marcacao_online.web run --debug
+
 
 ## Comando dos testes
 
