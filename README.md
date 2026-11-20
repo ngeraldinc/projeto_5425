@@ -47,7 +47,7 @@ export PYTHONPATH=src
 python -m sistema_marcacao_online.main
 
 Flask 
-PYTHONPATH=src flask --app sistema_marcacao_online.web run --debug
+PYTHONPATH=src python -m flask --app sistema_marcacao_online.web run --debug
 
 ## Configuração
 
