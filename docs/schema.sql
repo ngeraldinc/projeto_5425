@@ -23,12 +23,16 @@ CREATE TABLE IF NOT EXISTS "servico" (
 );
 
 CREATE TABLE IF NOT EXISTS "marcacao" (
-	"id_marcacao" SERIAL NOT NULL,
-	"data" DATE NOT NULL,
-	"hora" TIME NOT NULL,
-	"estado" VARCHAR(20) NOT NULL CHECK(estado IN ('realizada', 'cancelada', 'falta')),
-	"id_cliente" INTEGER NOT NULL,
-	PRIMARY KEY("id_marcacao")
+    "id_marcacao" SERIAL NOT NULL,
+    "data" DATE NOT NULL,
+    "hora" TIME NOT NULL,
+    "estado" VARCHAR(20) NOT NULL
+        CHECK ("estado" IN ('confirmada', 'realizada', 'cancelada', 'falta')),
+    "id_cliente" INTEGER NOT NULL,
+    "id_admin" INTEGER
+        REFERENCES "administrador"("id_admin")
+        ON DELETE RESTRICT,
+    PRIMARY KEY ("id_marcacao")
 );
 
 CREATE TABLE IF NOT EXISTS "marcacao_servico" (
