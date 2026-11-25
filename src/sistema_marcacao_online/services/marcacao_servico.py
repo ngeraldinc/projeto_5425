@@ -118,9 +118,17 @@ def criar_marcacao(
 def listar_marcacoes():
     return listar_marcacoes_repo()
 
-def atualizar_estado_marcacao(id_marcacao: int, estado: str) -> int:
+def atualizar_estado_marcacao(
+    id_marcacao: int,
+    estado: str,
+    id_admin: int | None = None,
+) -> int:
+
     if id_marcacao <= 0:
         raise ValueError("O ID da marcação deve ser um número positivo.")
+
+    if id_admin is not None and id_admin <= 0:
+        raise ValueError("O ID do administrador deve ser positivo.")
 
     if not isinstance(estado, str):
         raise ValueError("O estado indicado não é válido.")
@@ -136,6 +144,7 @@ def atualizar_estado_marcacao(id_marcacao: int, estado: str) -> int:
     id_atualizado = atualizar_estado_marcacao_repo(
         id_marcacao,
         estado_validado,
+        id_admin,
     )
 
     if id_atualizado is None:

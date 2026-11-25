@@ -128,7 +128,7 @@ def painel_admin():
             estado = request.form.get("estado", "")
 
             try:
-                atualizar_estado_marcacao(id_marcacao, estado)
+                atualizar_estado_marcacao( id_marcacao, estado, session["id_admin"],)
                 sucesso = f"Estado da marcação {id_marcacao} atualizado."
             except ValueError as erro_validacao:
                 erro = str(erro_validacao)

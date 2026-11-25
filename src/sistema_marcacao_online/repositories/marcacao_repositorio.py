@@ -91,16 +91,21 @@ def listar_marcacoes():
             """
         ).fetchall()
 
-def atualizar_estado_marcacao(id_marcacao: int, estado: str):
+def atualizar_estado_marcacao(
+    id_marcacao: int,
+    estado: str,
+    id_admin: int | None = None,
+):
     with get_connection() as connection:
         resultado = connection.execute(
             """
             UPDATE marcacao
-            SET estado = %s
+            SET estado = %s,
+                id_admin = COALESCE(%s, id_admin)
             WHERE id_marcacao = %s
             RETURNING id_marcacao
             """,
-            (estado, id_marcacao),
+            (estado, id_admin, id_marcacao),
         ).fetchone()
 
     return resultado[0] if resultado else None
