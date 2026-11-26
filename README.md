@@ -95,7 +95,9 @@ Cada vez que abrir uma nova consola, é necessário ativar o ambiente virtual an
 
 ## Comando dos testes
 
+```
  PYTHONPATH=src python -m unittest discover -s test -v
+```
 
 ## Limitações conhecidas
 
