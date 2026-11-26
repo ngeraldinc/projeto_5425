@@ -1,6 +1,6 @@
-Sistema de Gestão de Marcações Online
-
 ## Nome e objetivo
+
+Sistema de Gestão de Marcações Online
 
 O Sistema de Gestão de Marcações é uma aplicação para gerir as marcações de um estabelecimento de serviços. Permite aos clientes consultar serviços e horários disponíveis e marcar uma consulta. Também permite ao administrador gerir os serviços e atualizar o resultado das marcações.
 
@@ -19,19 +19,24 @@ O sistema contabiliza as faltas de cada cliente. Ao atingir duas faltas, o clien
 
 ## Requisitos
 
-- Python 3.14.5
-- PostgreSQL 18.6-3-windows-x64
-- Git version 2.56.0.windows.2
-- Acesso ao terminal ou à linha de comandos
+- Python 3.14.5 instalado para Windows
+- PostgreSQL instalado e em execução
+- Git instalado
+- PowerShell
+- Acesso à base de dados PostgreSQL
 
 ## Preparação do ambiente
 
-Crie a base de dados sistema_online no PostgreSQL e execute o ficheiro data/schema.sql através do pgAdmin.
+- Clone o repositório do GitHub e abra a pasta do projeto no terminal.
+- Abra o pgAdmin e crie uma base de dados com o nome sistema_online.
+- Abra o Query Tool ligado à base de dados sistema_online.
+- Abra e execute o ficheiro data/schema.sql.
+- Atualize a lista de tabelas no pgAdmin.
 
 ## Instalação
-Crie um ficheiro .env na pasta principal do projeto:
 
-env
+- Crie um ficheiro .env na pasta principal do projeto, ao mesmo nível de README.md e requirements.txt:
+
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=sistema_online
@@ -39,24 +44,54 @@ DB_USER=postgres
 DB_PASSWORD=coloque_a_sua_palavra_passe
 FLASK_SECRET_KEY=coloque_uma_chave_secreta
 
-## Comando de execução
+Substitua DB_PASSWORD pela palavra-passe usada no PostgreSQL. O ficheiro .env contém credenciais e não deve ser enviado para o GitHub.
 
-Terminal
-source .venv/Scripts/activate
-export PYTHONPATH=src
-python -m sistema_marcacao_online.main
+- Instalar dependências
+Abrir o PowerShell na pasta principal do projeto e executar:
 
-Flask 
-PYTHONPATH=src python -m flask --app sistema_marcacao_online.web run --debug
-
-## Configuração
-
-python -m venv .venv
-source .venv/Scripts/activate
+```
+py -3.14 -m venv .venv-win
+.\.venv-win\Scripts\Activate.ps1
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-PYTHONPATH=src python -m sistema_marcacao_online.criar_admin_inicial
-PYTHONPATH=src python -m flask --app sistema_marcacao_online.web run --debug
+```
 
+O prefixo (.venv-win) no início da linha da consola indica que o ambiente virtual está ativo. Na primeira utilização, verificar a instalação do Psycopg:
+
+```
+python -c "import psycopg; print(psycopg.__version__); print(psycopg.pq.__impl__)"
+```
+
+- Criar o administrador inicial
+
+Com o ambiente virtual ativo:
+
+```
+$env:PYTHONPATH = "src"
+python -m sistema_marcacao_online.criar_admin_inicial
+```
+
+- Executar pela consola
+
+```
+$env:PYTHONPATH = "src"
+python -m sistema_marcacao_online.main
+```
+
+- Executar a aplicação Web com Flask
+
+```
+$env:PYTHONPATH = "src"
+python -m flask --app sistema_marcacao_online.web run --debug
+```
+
+Aceder ao endereço indicado pelo Flask, normalmente http://127.0.0.1:5000. Para encerrar o servidor, voltar à consola e pressionar Ctrl+C.
+
+Cada vez que abrir uma nova consola, é necessário ativar o ambiente virtual antes de executar o projeto:
+
+```
+.\.venv-win\Scripts\Activate.ps1
+```  
 
 ## Comando dos testes
 
@@ -68,3 +103,4 @@ PYTHONPATH=src python -m flask --app sistema_marcacao_online.web run --debug
 - A marcação é confirmada no momento em que é criada.
 - O estado da marcação é atualizado pelo administrador para realizada, cancelada ou falta.
 - O bloqueio é aplicado quando o cliente acumula duas faltas.
+
