@@ -1,5 +1,6 @@
 from datetime import date, datetime, time
 from psycopg.errors import UniqueViolation
+from zoneinfo import ZoneInfo
 from sistema_marcacao_online.repositories.marcacao_repositorio import (contar_faltas_cliente, criar_marcacao as criar_marcacao_repo,
 horario_disponivel, atualizar_estado_marcacao as atualizar_estado_marcacao_repo, listar_marcacoes as listar_marcacoes_repo,
 listar_horarios_ocupados as listar_horarios_ocupados_repo)
@@ -43,6 +44,17 @@ def _validar_hora(valor: str | time) -> time:
 
     return hora_validada
 
+def _validar_horario_futuro(data_validada: date, hora_validada: time) -> None:
+    agora = datetime.now(ZoneInfo("Europe/Lisbon"))
+
+    if data_validada == agora.date():
+        hora_atual = agora.time().replace(tzinfo=None, second=0, microsecond=0)
+
+        if hora_validada <= hora_atual:
+            raise ValueError(
+                "Para hoje, escolha um horário que ainda não tenha passado."
+            )
+        
 def _validar_ids_servicos(valores: str | list[int]) -> list[int]:
     try:
         partes = valores.split(",") if isinstance(valores, str) else valores
@@ -80,6 +92,8 @@ def criar_marcacao(
 
     data_validada = _validar_data(data)
     hora_validada = _validar_hora(hora)
+    _validar_horario_futuro(data_validada, hora_validada)
+
     ids_validos = _validar_ids_servicos(ids_servicos)
 
     if data_validada.weekday() >= 5:
@@ -163,8 +177,24 @@ def listar_horarios_disponiveis(data: str | date) -> list[time]:
         listar_horarios_ocupados_repo(data_validada)
     )
 
-    return [
+    horarios_disponiveis = [
         hora
         for hora in horarios_do_dia
         if hora not in horarios_ocupados
     ]
+
+    agora = datetime.now(ZoneInfo("Europe/Lisbon"))
+
+    if data_validada == agora.date():
+        hora_atual = agora.time().replace(
+            tzinfo=None,
+            second=0,
+            microsecond=0,
+        )
+        horarios_disponiveis = [
+            hora
+            for hora in horarios_disponiveis
+            if hora > hora_atual
+        ]
+
+    return horarios_disponiveis
